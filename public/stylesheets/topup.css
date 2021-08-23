@@ -1,0 +1,22 @@
+.topup-content{
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 15px
+}
+
+.topup-content .header-topup{
+background-color: #6FD9FF;
+padding: 10px 50px;
+color: white;
+}
+
+.topup-content .instruksi-pemabayaran{
+  margin-top:10px;
+  background-color:#EFECF5;
+  font-size: 15px;
+  padding: 5px 10px;
+}
+
+.table-manage{
+  font-size:10px;
+}

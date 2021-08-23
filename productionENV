@@ -1,0 +1,15 @@
+SESSION_SECRET=ZmFjb19kZXZlbG9wbWVudDEyMw==
+ALLOWED_CLIENT1=https://faco.storymadeid.my.id
+TRIPAY_KEY=
+TRIPAY_PRIVATE_KEY=
+TRIPAY_KODE_MERCHANT=
+CODE_VA=
+TRIPAY_REDIRECTED=
+TRIPAY_CALLBACK_URL=/checkStatus
+DB_NAME=faco_mern_db
+DB_USER=storymadeid
+DB_PASS=091013Gs@!
+DB_HOST=127.0.0.1
+DB_VENDOR=mysql
+PORT=8447
+TRIPAY_REDIRECTED=https://faco.storymadeid.my.id/dompetKu

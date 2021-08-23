@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+  <link rel="stylesheet" href="../stylesheets/topup.css">
+
+  <title>
+    <%= title %>
+  </title>
+</head>
+
+<body style="background-color: whitesmoke;">
+
+
+  <div class="topup-content">
+    <!-- toast notification -->
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" hidden>
+      <div class="toast-header">
+        <img src="..." class="rounded mr-2" alt="...">
+        <strong class="mr-auto">Error</strong>
+        <small class="text-muted">just now</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">
+        See? Just like this.
+      </div>
+    </div>
+    <!-- toast notification -->
+    <!-- Alert Danger -->
+    <div class="alert alert-danger" role="alert" id="error-data" hidden>
+      A simple danger alert—check it out!
+    </div>
+    <!-- End Alert Danger -->
+    <div class="card" style="width: 20rem; margin: 50% auto; ">
+      <div class="header-topup">
+        <h2 class="card-title text-center font-weight-bold">Topup Dana</h2>
+        <h4 class="card-title text-center">
+          <div class="btn btn-secondary" style="opacity: 0.5; font-weight:500;">
+            <%= cost %>
+          </div>
+        </h4>
+      </div>
+      <div class="card-body" id="first-method">
+        <p class="mt-3">Bank Virtual Account :</p>
+        <div class="row mr-2">
+          <% for( let i=0; i < ListBank.length; i++ ) { %>
+            <% if (ListBank[i].active===true) { %>
+              <div class="col-4 bank_list">
+                <button class="btn channel-bank" id="bank-data" data-bank="<%= ListBank[i].code %> ">
+                  <img src="../images/<%= ListBank[i].code %>.png" alt="" style="width:4em;">
+                </button>
+              </div>
+              <% } %>
+                <% } %>
+        </div>
+        <div class="instruksi-pemabayaran">
+          <p class="text-capitalize">instruksi pembayaran :</p>
+          <p class="text-capitalize">Kode Bank : <small class="code-bank"></small></p>
+          <!-- insturksi Pembayaran -->
+          <div class="instruksi">
+
+          </div>
+          <!-- End insturksi Pembayaran -->
+
+        </div>
+        <button class="btn btn-primary float-right next-stage">Next</button>
+      </div>
+      <div class="card-body" id="second-method" hidden>
+        <div class="alert alert-primary" role="alert">
+          <p class="text-capitalize" style="font-size: 12px;">Estimasi Pembayaran Hingga 1 Hari</p>
+        </div>
+        <form method="post" action="/checkoutApi/TopUp">
+          <input type="hidden" class="form-control" id="code_bank" name="code_bank" readonly>
+          <input type="hidden" class="form-control" id="amount" name="amount" value="<%=amount;%>" readonly>
+          <div class="form-group">
+            <label for="merchant_ref">Kode Refrensi</label>
+            <input type="text" class="form-control" id="merchant_ref" name="merchant_ref" value="<%=refrensi;%>"
+              readonly>
+          </div>
+          <div class="form-group">
+            <label for="customer_phone">No.Tlp</label>
+            <input type="text" class="form-control" id="customer_phone" name="customer_phone" value="0<%=user;%>"
+              readonly>
+          </div>
+          <div class="form-group">
+            <label for="customer_name">Nama</label>
+            <input type="text" class="form-control" id="customer_name" name="customer_name">
+          </div>
+          <div class="form-group">
+            <label for="customer_email">Email</label>
+            <input type="text" class="form-control" id="customer_email" name="customer_email">
+          </div>
+          <button type="submit" class="btn btn-primary float-right text-uppercase">topup</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- Optional JavaScript; choose one of the two! -->
+
+  <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+    integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+    crossorigin="anonymous"></script>
+
+  <script>
+    function InstruksiStap(el_data) {
+
+    }
+
+  </script>
+
+
+  <script>
+    $('.btn.channel-bank#bank-data').click(function () {
+      $('.topup-content .instruksi-pemabayaran .instruksi').html('')
+      var code_bank = $('.code-bank').html()
+      var codeBank = $(this).data('bank');
+      $('.code-bank').html(codeBank)
+      $.ajax({
+        url: "/checkoutApi/instruksiPembayaran",
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          code_bank: codeBank,
+        },
+        success: function (instruksi) {
+          if (code_bank == instruksi.bankCode || code_bank == '') {
+            var dataIns = instruksi.data;
+
+            dataIns.forEach(el => {
+              var htmldata = $('.topup-content .instruksi-pemabayaran .instruksi')
+              $('.topup-content .instruksi-pemabayaran .instruksi').append('<div><table class="table table-striped" id="table_instruksi"><thead><tr><th scope="col">' + el.title + '</th></tr></thead><tbody class="instruksi-lebih-detail"><tr class="table-manage"><td>' + el.steps + '</td></tr></tbody></table></div>');
+            });
+
+          } else {
+            $('.topup-content .instruksi-pemabayaran .instruksi').html('')
+            var dataIns = instruksi.data;
+
+            dataIns.forEach(el => {
+              var htmldata = $('.topup-content .instruksi-pemabayaran .instruksi')
+              $('.topup-content .instruksi-pemabayaran .instruksi').append('<div><table class="table table-striped" id="table_instruksi"><thead><tr><th scope="col">' + el.title + '</th></tr></thead><tbody class="instruksi-lebih-detail"><tr class="table-manage"><td>' + el.steps + '</td></tr></tbody></table></div>');
+            });
+          }
+        }
+      })
+
+    });
+
+    $('button.next-stage').click(function () {
+      var code_bank = $('.code-bank').html()
+      if (code_bank == '') {
+        $('#error-data').removeAttr('hidden');
+        $('#error-data').html('Harap Pilih Bank transfer Terlebih Dahulu');
+      } else {
+        $('.topup-content .card').find('#first-method').attr('hidden', true)
+        $('.topup-content .card').find('#second-method').attr('hidden', false)
+        $('#second-method #code_bank').val(code_bank);
+      }
+    });
+
+  </script>
+
+
+</body>
+
+</html>
